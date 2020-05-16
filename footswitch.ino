@@ -1,7 +1,13 @@
 #include <EEPROM.h>
 
-bool buttonReleased = 0;
-unsigned char buttonState[7];
+#define BUTTON1 2
+#define BUTTON2 3
+#define BUTTON3 4
+#define BUTTON4 5
+#define BUTTON5 6
+#define BUTTON6 7
+
+int button1Status = 0;
 
 void setup() 
 {
@@ -9,58 +15,124 @@ void setup()
     Serial.begin(1000000);
 
     // input switches
-    for(int button = 2; button <= 7; button++)
-    {
-        pinMode(button, INPUT_PULLUP);
-    }
-
-    // output LEDs
-    for(int led = 14; led <= 19; led++) pinMode(led, OUTPUT);
- 
-
-    // set LEDs status from saved EEPROM values
-    for(int led = 14; led <= 19; led++)
-    {   
-        if(EEPROM.read(led))
-        {
-            digitalWrite(led, HIGH);
-        }
-        else
-        {
-            digitalWrite(led, LOW);
-        }
-    }
-
+    pinMode(BUTTON1, INPUT_PULLUP);
+    pinMode(BUTTON2, INPUT_PULLUP);
+    pinMode(BUTTON3, INPUT_PULLUP);
+    pinMode(BUTTON4, INPUT_PULLUP);
+    pinMode(BUTTON5, INPUT_PULLUP);
+    pinMode(BUTTON6, INPUT_PULLUP); 
 }
 
 void loop() 
 {
-    for(int button = 2; button <=7; button++)
-    {
-        if(!digitalRead(button) && !buttonReleased)
+
+        if(!digitalRead(BUTTON1))
         {
-            buttonReleased = 1;
-            if(EEPROM.read(button))
+            if(button1Status == 0)
             {
-                EEPROM.write(button, 0x00);
-                sendMIDICC(0xB0, button + 0x53, 0x00);
+                MIDImessage(0xB0, 0x55, 0x00);
+                button1Status = 1;
             }
             else
             {
-                EEPROM.write(button, 0xFF);
-                sendMIDICC(0xB0, button + 0x53, 0xFF);
+                MIDImessage(0xB0, 0x55, 0x7F);
+                button1Status = 0;
             }
 
-            while(digitalRead(button)); // wait until button is released
-            buttonReleased = 0;
+            while(!digitalRead(BUTTON1)); // wait until button is released
+            delay(10);
         }
-    }
 
+        if(!digitalRead(BUTTON2))
+        {
+            if(button1Status == 0)
+            {
+                MIDImessage(0xB0, 0x56, 0x00);
+                button1Status = 1;
+            }
+            else
+            {
+                MIDImessage(0xB0, 0x56, 0x7F);
+                button1Status = 0;
+            }
+
+            while(!digitalRead(BUTTON2)); // wait until button is released
+            delay(10);
+        }
+
+        if(!digitalRead(BUTTON3))
+        {
+            if(button1Status == 0)
+            {
+                MIDImessage(0xB0, 0x57, 0x00);
+                button1Status = 1;
+            }
+            else
+            {
+                MIDImessage(0xB0, 0x57, 0x7F);
+                button1Status = 0;
+            }
+
+            while(!digitalRead(BUTTON3)); // wait until button is released
+            delay(10);
+        }
+
+        if(!digitalRead(BUTTON4))
+        {
+            if(button1Status == 0)
+            {
+                MIDImessage(0xB0, 0x58, 0x00);
+                button1Status = 1;
+            }
+            else
+            {
+                MIDImessage(0xB0, 0x58, 0x7F);
+                button1Status = 0;
+            }
+
+            while(!digitalRead(BUTTON4)); // wait until button is released
+            delay(10);
+        }
+
+        if(!digitalRead(BUTTON5))
+        {
+            if(button1Status == 0)
+            {
+                MIDImessage(0xB0, 0x59, 0x00);
+                button1Status = 1;
+            }
+            else
+            {
+                MIDImessage(0xB0, 0x59, 0x7F);
+                button1Status = 0;
+            }
+
+            while(!digitalRead(BUTTON5)); // wait until button is released
+            delay(10);
+        }
+
+        if(!digitalRead(BUTTON6))
+        {
+            if(button1Status == 0)
+            {
+                MIDImessage(0xB0, 0x5A, 0x00);
+                button1Status = 1;
+            }
+            else
+            {
+                MIDImessage(0xB0, 0x5A, 0x7F);
+                button1Status = 0;
+            }
+
+            while(!digitalRead(BUTTON6)); // wait until button is released
+            delay(10);
+        }
 }
 
-void sendMIDICC(byte command, byte controller, byte value)
-{
-    Serial.write(command);
-    Serial.write(controller);
-    Serial.write(value);
+
+//send MIDI message
+void MIDImessage(int command, int MIDInote, int MIDIvelocity) {
+  Serial.write(command);//send note on or note off command 
+  Serial.write(MIDInote);//send pitch data
+  Serial.write(MIDIvelocity);//send velocity data
 }
