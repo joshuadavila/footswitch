@@ -1,5 +1,6 @@
 #include <EEPROM.h>
 
+#define KEY_DELAY 50  // ms debounce
 #define BUTTON1 2
 #define BUTTON2 3
 #define BUTTON3 4
@@ -8,6 +9,12 @@
 #define BUTTON6 7
 
 int button1Status = 0;
+int button2Status = 0;
+int button3Status = 0;
+int button4Status = 0;
+int button5Status = 0;
+int button6Status = 0;
+
 
 void setup() 
 {
@@ -40,92 +47,92 @@ void loop()
             }
 
             while(!digitalRead(BUTTON1)); // wait until button is released
-            delay(10);
+            delay(KEY_DELAY);
         }
 
         if(!digitalRead(BUTTON2))
         {
-            if(button1Status == 0)
+            if(button2Status == 0)
             {
                 MIDImessage(0xB0, 0x56, 0x00);
-                button1Status = 1;
+                button2Status = 1;
             }
             else
             {
                 MIDImessage(0xB0, 0x56, 0x7F);
-                button1Status = 0;
+                button2Status = 0;
             }
 
             while(!digitalRead(BUTTON2)); // wait until button is released
-            delay(10);
+            delay(KEY_DELAY);
         }
 
         if(!digitalRead(BUTTON3))
         {
-            if(button1Status == 0)
+            if(button3Status == 0)
             {
                 MIDImessage(0xB0, 0x57, 0x00);
-                button1Status = 1;
+                button3Status = 1;
             }
             else
             {
                 MIDImessage(0xB0, 0x57, 0x7F);
-                button1Status = 0;
+                button3Status = 0;
             }
 
             while(!digitalRead(BUTTON3)); // wait until button is released
-            delay(10);
+            delay(KEY_DELAY);
         }
 
         if(!digitalRead(BUTTON4))
         {
-            if(button1Status == 0)
+            if(button4Status == 0)
             {
                 MIDImessage(0xB0, 0x58, 0x00);
-                button1Status = 1;
+                button4Status = 1;
             }
             else
             {
                 MIDImessage(0xB0, 0x58, 0x7F);
-                button1Status = 0;
+                button4Status = 0;
             }
 
             while(!digitalRead(BUTTON4)); // wait until button is released
-            delay(10);
+            delay(KEY_DELAY);
         }
 
         if(!digitalRead(BUTTON5))
         {
-            if(button1Status == 0)
+            if(button5Status == 0)
             {
                 MIDImessage(0xB0, 0x59, 0x00);
-                button1Status = 1;
+                button5Status = 1;
             }
             else
             {
                 MIDImessage(0xB0, 0x59, 0x7F);
-                button1Status = 0;
+                button5Status = 0;
             }
 
             while(!digitalRead(BUTTON5)); // wait until button is released
-            delay(10);
+            delay(KEY_DELAY);
         }
 
         if(!digitalRead(BUTTON6))
         {
-            if(button1Status == 0)
+            if(button6Status == 0)
             {
                 MIDImessage(0xB0, 0x5A, 0x00);
-                button1Status = 1;
+                button6Status = 1;
             }
             else
             {
                 MIDImessage(0xB0, 0x5A, 0x7F);
-                button1Status = 0;
+                button6Status = 0;
             }
 
             while(!digitalRead(BUTTON6)); // wait until button is released
-            delay(10);
+            delay(KEY_DELAY);
         }
 }
 
